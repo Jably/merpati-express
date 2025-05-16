@@ -1,0 +1,584 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200&display=swap");
+
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+body {
+  transition: opacity 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+a.LinkButton {
+  border-style: solid;
+  border-width : 1px 1px 1px 1px;
+  text-decoration : none;
+  padding : 4px;
+  border-color : #000000;
+}
+
+.kotak{
+    display: flex;
+    background: aqua;
+    border-radius: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.radio{
+  display: flex;
+  background: aqua;
+  border-radius: 20px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #0095ff;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.text {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+/* Media Queries untuk Responsivitas */
+@media (max-width: 768px) {
+  .text {
+    font-size: 24px; /* Mengurangi ukuran font pada layar lebih kecil */
+  }
+
+  .circle {
+    width: 24px;
+    height: 24px;
+    line-height: 24px; /* Sesuaikan line-height */
+  }
+}
+
+@media (max-width: 480px) {
+  .text {
+    font-size: 20px; /* Ukuran font lebih kecil di layar sangat kecil */
+  }
+
+  .circle {
+    width: 20px;
+    height: 20px;
+    line-height: 20px; /* Sesuaikan line-height */
+    margin-right: 8px; /* Mengurangi margin */
+  }
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  font-size: 28px;
+  margin: 20px 20px 5px 20px;
+  font-weight: 700;
+}
+
+/* Container Styles */
+.registration-container {
+  max-width: 1165px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Card Styles */
+/* .registration-card {
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+  padding: 24px;
+  margin: 20px;
+} */
+
+.registration-card {
+  @apply bg-white shadow-[rgba(0,0,0,0.1)_0px_4px_12px] m-5 p-6 rounded-xl;
+}
+
+.registration-card .ant-card-head {
+  border-bottom: none;
+  padding: 0 0 20px 0;
+}
+
+.registration-card .ant-card-head-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+  color: #1a1a1a;
+}
+
+/* Form Styles */
+.registration-form {
+  margin-top: 20px;
+  font-weight: 700;
+  font-family: "montserrat";
+  padding: 40px;
+}
+
+.registration-form2 {
+  margin-top: 20px;
+  font-weight: 700;
+  font-family: "montserrat";
+  padding: 40px;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-step-label {
+  font-size: 25px;
+  color: #3a96d2;
+  font-weight: 600;
+}
+
+.form-step-number,
+.form-title {
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.form-step-number {
+  font-size: 24px;
+}
+
+.form-title {
+  font-size: 20px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-top: 4px;
+}
+
+.ant-card-body {
+  @apply flex flex-wrap justify-center items-center  p-[5px];
+}
+
+/* Input Styles */
+.registration-form .ant-input,
+.registration-form .ant-picker,
+.registration-form .ant-select-selector {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  padding: 8px 12px;
+  height: 40px;
+  font-weight: bolder;
+  font-family: "montserrat";
+
+}
+.registration-form .ant-input,
+.registration-form .ant-picker,
+.registration-form .ant-select-selector
+.ant-select-selection-item{
+  font-weight: bolder;
+  font-family: "montserrat";
+}
+
+.registration-form .ant-input:hover,
+.registration-form .ant-picker:hover,
+.registration-form .ant-select-selector:hover {
+  border-color: #3a96d2;
+}
+
+.registration-form .ant-input:focus,
+.registration-form .ant-picker-focused,
+.registration-form .ant-select-focused .ant-select-selector {
+  border-color: #3a96d2;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* TextArea Styles */
+.reason-textarea {
+  min-height: 100px;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  resize: vertical;
+}
+
+/* Button Styles */
+.submit-button {
+  @apply h-11 text-base font-medium bg-[#3a96d2] shadow-[0_2px_0_rgba(0,0,0,0.045)] transition-all duration-[0.3s] ease-[ease] rounded-lg border-[none];
+  @apply w-[15svh] sm:w-[50svh]; /* Responsif: full di HP, 50svh di screen sm ke atas */
+}
+
+.submit-button:hover {
+  background-color: #40a9ff;
+  transform: translateY(-1px);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+/* Error State Styles */
+.registration-form .ant-form-item-explain-error {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #ff4d4f;
+}
+
+.registration-form .ant-form-item-has-error .ant-input,
+.registration-form .ant-form -item-has-error .ant-picker,
+.registration-form .ant-form-item-has-error .ant-select-selector {
+  border-color: #ff4d4f;
+}
+
+/* Success State Styles */
+.registration-form .ant-form-item-has-success .ant-input,
+.registration-form .ant-form-item-has-success .ant-picker,
+.registration-form .ant-form-item-has-success .ant-select-selector {
+  border-color: #52c41a;
+}
+
+/* Steps Container Styles */
+.steps-container {
+  margin-bottom: 24px;
+  padding: 20px;
+}
+
+.steps-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 32px; /* Spacing between steps */
+}
+
+.step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 24px; /* Fixed padding */
+}
+
+.step-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #8c8c8c;
+  margin-bottom: 24px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+  height: 10px;
+  top: 35px;
+  background-color: #f0f0f0;
+  position: relative;
+  border-radius: 2px;
+  margin: 0 8px; /* Add margin to separate bars */
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f0f0f0;
+  border-radius: 2px;
+}
+
+/* Active Step Styles */
+.step.active .step-title {
+  color: #1a1a1a;
+}
+
+.step.active .progress-fill {
+  background: linear-gradient(90deg, #1d4ebc 0%, #77b6e0 50%, #1d4ebc 100%);
+  background-size: 200% 100%;
+  animation: progressAnimation 2s ease-in-out infinite;
+}
+
+@keyframes progressAnimation {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .registration-container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .registration-card .ant-card-head-title {
+    font-size: 20px;
+  }
+
+  .registration-form .ant-form-item {
+    margin-bottom: 16px;
+  }
+
+  .steps-wrapper {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .step {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .step-title {
+    position: relative;
+    transform: none;
+    left: 0;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .registration-path {
+    flex-direction: column; /* Stack cards vertically */
+    gap: 16px; /* Space between cards */
+  }
+
+  .option-card {
+    width: 100%; /* Full width for cards */
+  }
+
+  .button-group {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Space between buttons */
+  }
+
+}
+
+/* Optional: Completed Step Styles */
+.step.completed .progress-fill {
+  background: #52c41a;
+  animation: none;
+}
+
+/* Ensure text stays centered */
+.step:first-child .step-title,
+.step:last-child .step-title {
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.step2-container {
+  margin: 20px 0;
+}
+
+.submit-button {
+  margin-top: 20px;
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+.logo{
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 50px;
+}
+
+.custom-font{
+  font-family: Mont;
+}
+
+.about{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: space-between;
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 100px;
+      background: chocolate;
+      position: relative;
+      top: 100%;
+}
+
+.aboutpage{
+  display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.regist-info {
+  font-size: 13px;
+  padding: 10px;
+  margin-top: -35px;
+  font-weight: 600;
+  color: #626262;
+}
+
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+}
+
+.confirmation{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    text-align: left;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="959" height="291" viewBox="0 0 959 291">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        font-size: 524.429px;
+        text-anchor: middle;
+        font-family: Montserrat;
+        font-style: italic;
+      }
+
+      .cls-1 {
+        fill: #1d4ebc;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: #d71f1f;
+      }
+    </style>
+  </defs>
+  <text id="Merpati" class="cls-1" transform="translate(472.09 183.35) scale(0.442 0.443)">Merpati</text>
+  <text id="express" class="cls-2" transform="translate(732.072 270.565) scale(0.195 0.196)">express</text>
+</svg>
