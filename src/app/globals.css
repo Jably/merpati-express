@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
 
@@ -10,6 +10,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@theme {
+  --font-montserrat: "Montserrat", sans-serif; 
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -108,6 +111,7 @@ a.LinkButton {
     font-size: 24px; /* Mengurangi ukuran font pada layar lebih kecil */
   }
 
+
   .circle {
     width: 24px;
     height: 24px;
@@ -119,6 +123,7 @@ a.LinkButton {
   .text {
     font-size: 20px; /* Ukuran font lebih kecil di layar sangat kecil */
   }
+
 
   .circle {
     width: 20px;
@@ -146,21 +151,16 @@ a.LinkButton {
 }
 
 /* Card Styles */
-/* .registration-card {
-  background-color: #ffffff !important;
-  border-radius: 12px !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
-  padding: 24px;
-  margin: 20px;
-} */
 
 .registration-card {
   @apply bg-white shadow-[rgba(0,0,0,0.1)_0px_4px_12px] m-5 p-6 rounded-xl;
+  @apply flex flex-wrap content-center justify-center items-center;
 }
 
 .registration-card .ant-card-head {
   border-bottom: none;
   padding: 0 0 20px 0;
+  
 }
 
 .registration-card .ant-card-head-title {
@@ -172,7 +172,7 @@ a.LinkButton {
 
 /* Form Styles */
 .registration-form {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   font-weight: 700;
   font-family: "montserrat";
   padding: 40px;
@@ -217,8 +217,11 @@ a.LinkButton {
   margin-top: 4px;
 }
 
-.ant-card-body {
-  @apply flex flex-wrap justify-center items-center  p-[5px];
+.ant-card-body2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
 }
 
 /* Input Styles */
@@ -229,15 +232,16 @@ a.LinkButton {
   border: 1px solid #d9d9d9;
   padding: 8px 12px;
   height: 40px;
-  font-weight: bolder;
+  font-weight: 500;
   font-family: "montserrat";
+  width: 30vh;
 
 }
 .registration-form .ant-input,
 .registration-form .ant-picker,
 .registration-form .ant-select-selector
 .ant-select-selection-item{
-  font-weight: bolder;
+  font-weight: 500;
   font-family: "montserrat";
 }
 
@@ -335,12 +339,12 @@ a.LinkButton {
 /* Progress Bar Styles */
 .progress-bar {
   height: 10px;
-  top: 35px;
   background-color: #f0f0f0;
   position: relative;
   border-radius: 2px;
-  margin: 0 8px; /* Add margin to separate bars */
+  margin: 30px 8px 5px;
 }
+
 
 .progress-fill {
   position: absolute;

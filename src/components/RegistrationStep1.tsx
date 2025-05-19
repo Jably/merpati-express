@@ -180,7 +180,7 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
           name: senderValues.sender,
           address: senderAddress, // Alamat komplit (lokasi + jalan)
           location: senderLocation,
-          addressDetail: senderValues.senderaddress, // Hanya Jl ayat
+          addressDetail: senderValues.senderaddress || "", // Alamat jalan
         },
         consignee: {
           name: consigneeValues.consignee,
@@ -204,8 +204,23 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
   
 
   return (
-    <Card title="" className="registration-card">
-      <Form form={senderForm} layout="vertical" className="registration-form" autoComplete="off">
+    <>
+     <div>
+     <Card title=""
+  classNames={{
+    body: 'my-classname',
+  }}
+  styles={{
+    body: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignContent: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  }}
+>
+      <Form form={senderForm} layout="vertical" className="registration-form "  autoComplete="off">
         <Form.Item label="Sender/Pengirim" name="sender" rules={[{ required: true, message: "Harap Isi Pengirim!!!" }]}>
           <Input placeholder="Informasi Pengirim" />
         </Form.Item>
@@ -255,7 +270,7 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
           />
         </Form.Item>
       </Form>
-
+      
       <Form form={consigneeForm} layout="vertical" className="registration-form" autoComplete="off">
         <Form.Item label="Consignee/Penerima" name="consignee" rules={[{ required: true, message: "Harap Isi Penerima!!!" }]}>
           <Input placeholder="Informasi Penerima" />
@@ -307,9 +322,14 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
         </Form.Item>
       </Form>
 
-      <Button type="primary" onClick={onFinish} className="submit-button">
+      
+    </Card> 
+     </div>
+     <div className="flex flex-row flex-wrap justify-center">
+    <Button type="primary" onClick={onFinish} className="submit-button">
         Next
       </Button>
-    </Card>
+    </div>
+    </>
   );
 };

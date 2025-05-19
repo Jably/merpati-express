@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           origin: data.origin,
           destination: data.destination,
           airwayBill: data.airwayBill,
+          keterangan: data.keterangan,
           status: "pending", // Menetapkan status sebagai "pending"
         },
       });

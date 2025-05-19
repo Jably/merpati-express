@@ -14,8 +14,9 @@ import "@/app/globals.css";
 import DataAkun from "./DataAkun";
 import DataOrder from "./DataOrder";
 import Invoice from "./Invoice";
+import withAuth from "../../lib/withAuth";
 
-export default function NavbarAdmin() {
+function NavbarAdmin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [adminName, setAdminName] = useState("");
@@ -42,19 +43,15 @@ export default function NavbarAdmin() {
 
   const renderPage = () => {
     switch (currentPage) {
-      case "akun":
-        return <DataAkun />;
-      case "order":
-        return <DataOrder />;
-      case "invoice":
-        return <Invoice />;
-      default:
-        return <DataOrder />;
+      case "akun": return <DataAkun />;
+      case "order": return <DataOrder />;
+      case "invoice": return <Invoice />;
+      default: return <DataOrder />;
     }
   };
 
   return (
-    <div className="min-h-screen flex items-stretch">
+    <div className="min-h-screen flex items-stretch font-montserrat font-bold">
 
       {/* Sidebar */}
       <div className={`
@@ -65,13 +62,10 @@ export default function NavbarAdmin() {
         ${isCollapsed ? 'w-10' : 'w-60'}
         flex flex-col
       `}>
-
-        {/* Logo */}
         <div className="flex items-center justify-center px-4 py-4">
           <img className="w-10 h-10 transition-all" src="/logo.svg" alt="logo" />
         </div>
 
-        {/* Menu Items */}
         <div className="mt-4 space-y-2 flex-1">
           <div
             onClick={() => { setCurrentPage('order'); setIsMobileOpen(false); }}
@@ -81,7 +75,6 @@ export default function NavbarAdmin() {
             <ClipboardDocumentListIcon className="w-8 h-8 text-gray-700" />
             {!isCollapsed && <span className="ml-6 text-[18px] text-black">Data Order</span>}
           </div>
-
           <div
             onClick={() => { setCurrentPage('invoice'); setIsMobileOpen(false); }}
             className={`flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer 
@@ -101,51 +94,37 @@ export default function NavbarAdmin() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="flex-1 flex flex-col min-h-screen">
-
-        {/* Navbar */}
         <nav className="bg-[#d8d8d8] shadow-md w-full fixed top-0 left-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16 items-center">
-
-              {/* Left Side */}
               <div className="flex items-center space-x-4">
-
-                {/* Hamburger (Mobile) */}
                 <div className="md:hidden">
                   <button onClick={toggleMenu} className="text-gray-700 focus:outline-none">
                     <FontAwesomeIcon icon={isMobileOpen ? faTimes : faBars} size="lg" />
                   </button>
                 </div>
-
-                {/* Hamburger (Desktop) */}
                 <button onClick={toggleCollapse} className="hidden md:block text-gray-700">
                   <FontAwesomeIcon icon={faBars} />
                 </button>
-
-                {/* Logo */}
                 <img className="w-12 h-12" src="/logo.svg" alt="logo" />
               </div>
-
-              {/* User Info */}
               <div className="flex items-center space-x-4">
                 <UserCircleIcon className="w-8 h-8 text-gray-700" />
                 <div className="text-lg text-gray-700 text-center font-semibold">{adminName || "Loading..."}</div>
                 <ArrowRightOnRectangleIcon onClick={handleLogout} className="w-8 h-8 text-gray-700 cursor-pointer" />
               </div>
-
             </div>
           </div>
         </nav>
 
-        {/* Main Content */}
         <div className="mt-16 p-4 flex-1">
           {renderPage()}
         </div>
-
       </div>
-
     </div>
   );
 }
+
+export default withAuth(NavbarAdmin);

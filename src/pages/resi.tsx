@@ -19,6 +19,7 @@ const ResiPage = () => {
       setResiData(JSON.parse(savedData));
     } else {
       alert("Data resi tidak ditemukan!");
+      router.push("/");
     }
 
     // Menghapus data saat halaman ditutup
@@ -95,10 +96,11 @@ const ResiPage = () => {
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b-2 pb-4">
-          <div>
-            <h3 className="font-semibold text-xl text-gray-800">Merpati Express</h3>
-            <p className="text-sm text-gray-500"></p>
-          </div>
+        <img
+          src="miring.png"
+          alt="miring"
+          className="max-w-[140px] relative"
+        />
           {resiData?.airwayBill && (
             <img
               src={generateBarcode(resiData.airwayBill)} // Barcode image
@@ -117,13 +119,15 @@ const ResiPage = () => {
         {/* Pengirim dan Penerima */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <h4 className="font-semibold">Pengirim</h4>
+            <h4 className="font-bold">Pengirim:</h4>
             <p>{resiData?.sender}</p>
+            <br />
             <p>{resiData?.senderAddress}</p>
           </div>
           <div>
-            <h4 className="font-semibold">Penerima</h4>
+            <h4 className="font-bold">Penerima:</h4>
             <p>{resiData?.consignee}</p>
+            <br />
             <p>{resiData?.consigneeAddress}</p>
           </div>
         </div>
@@ -134,6 +138,7 @@ const ResiPage = () => {
             <p><b>Deskripsi:</b> {resiData?.description}</p>
             <p><b>Jumlah (Colly):</b> {resiData?.colly}</p>
             <p><b>Berat (kg):</b> {resiData?.weight}</p>
+            <p><b>Keterangan :</b> {resiData?.keterangan}</p>
           </div>
           <div>
             <p><b>Origin:</b> {resiData?.origin}</p>

@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 import "@/app/globals.css";
+import withAuth from "../../lib/withAuth";
 
 export default function DataOrder() {
   const [orders, setOrders] = useState<any[]>([])
@@ -14,10 +15,23 @@ export default function DataOrder() {
   const [editingId, setEditingId] = useState<number | null>(null)
 
   const fetchOrders = async () => {
-    const res = await fetch('/api/Order')
-    const data = await res.json()
-    setOrders(data)
-  }
+    const res = await fetch('/api/Order');
+    if (!res.ok) {
+      setOrders([]);
+      return;
+    }
+  
+    const data = await res.json();
+  
+    if (Array.isArray(data)) {
+      setOrders(data);
+    } else if (data && typeof data === 'object') {
+      setOrders([data]);
+    } else {
+      setOrders([]);
+    }
+  };
+  
 
   useEffect(() => { fetchOrders() }, [])
 
@@ -59,22 +73,22 @@ export default function DataOrder() {
 
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold mb-4">Data Order</h1>
+      <h1 className="text-2xl font-bold font-montserrat mb-4">Data Order</h1>
   
       {/* Grid 2 kolom */}
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         {/* Tabel */}
-        <div className="w-full">
-          <Table className="table-auto w-full">
+        <div className="w-full text-center">
+          <Table className="table-auto w-full font-montserrat font-bold">
             <TableHeader>
-              <TableRow>
-                <TableHead className="whitespace-nowrap">AWB</TableHead>
-                <TableHead className="whitespace-nowrap">No Order</TableHead>
-                <TableHead className="whitespace-nowrap">Pengirim</TableHead>
-                <TableHead className="whitespace-nowrap">Penerima</TableHead>
-                <TableHead className="whitespace-nowrap">Asal - Tujuan</TableHead>
-                <TableHead className="whitespace-nowrap">Status</TableHead>
-                <TableHead className="whitespace-nowrap">Aksi</TableHead>
+              <TableRow className="bg-[#1d4ebc] hover:bg-[#1d4ebc]">
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">AWB</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">No Order</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Pengirim</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Penerima</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Asal - Tujuan</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Status</TableHead>
+                <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -85,10 +99,26 @@ export default function DataOrder() {
                   <TableCell className="whitespace-nowrap">{order.senderName}</TableCell>
                   <TableCell className="whitespace-nowrap">{order.consigneeName}</TableCell>
                   <TableCell className="whitespace-nowrap">{order.origin} → {order.destination}</TableCell>
-                  <TableCell className="whitespace-nowrap">{order.status}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+  <span
+    className={`text-black text-sm px-3 py-1 rounded ${
+      order.status === 'pending'
+        ? 'bg-orange-500'
+        : order.status === 'delivered'
+        ? 'bg-green-600'
+        : order.status === 'cancelled'
+        ? 'bg-red-500'
+        : 'bg-gray-300'
+    }`}
+  >
+    {order.status}
+  </span>
+</TableCell>
+
+
                   <TableCell className="whitespace-nowrap space-x-2">
-                    <Button size="sm" variant="secondary" onClick={() => handleEdit(order)}>Edit</Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDelete(order.id)}>Hapus</Button>
+                    <Button className="text-black font-bold" size="sm" variant="secondary" onClick={() => handleEdit(order)}>Edit</Button>
+                    <Button size="sm" className="font-bold" variant="destructive" onClick={() => handleDelete(order.id)}>Hapus</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -109,7 +139,7 @@ export default function DataOrder() {
             <CardTitle>{editingId ? 'Edit Order' : 'Tambah Order Baru'}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 font-montserrat font-bold">
               <Input name="orderNumber" onChange={handleChange} value={form.orderNumber || ''} placeholder="No Order" />
               <Input name="senderName" onChange={handleChange} value={form.senderName || ''} placeholder="Nama Pengirim" />
               <Input name="senderAddress" onChange={handleChange} value={form.senderAddress || ''} placeholder="Alamat Pengirim" />
@@ -123,6 +153,7 @@ export default function DataOrder() {
               <Input name="origin" onChange={handleChange} value={form.origin || ''} placeholder="Asal" />
               <Input name="destination" onChange={handleChange} value={form.destination || ''} placeholder="Tujuan" />
               <Input name="airwayBill" onChange={handleChange} value={form.airwayBill || ''} placeholder="Airway Bill" />
+              <Input name="keterangan" onChange={handleChange} value={form.keterangan || ''} placeholder="Keterangan"></Input>
   
               <Select value={form.status || 'pending'} onValueChange={handleSelectChange}>
                 <SelectTrigger>

@@ -26,7 +26,11 @@ export default function withAuth(Component: any) {
     }, [router]);
 
     if (loading) {
-      
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600 border-gray-300" />
+        </div>
+      )}
     }
 
     return <Component {...props} />;

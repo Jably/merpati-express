@@ -3,7 +3,7 @@
 import { useDispatch } from "react-redux";
 import { updateForm } from "@/store/formSlice";
 import React, { useEffect, useState } from "react";
-import { Button, message } from "antd";
+import { Button, message, Modal } from "antd";
 import { useRouter } from "next/navigation"; // ✅ Ganti dengan next/navigation
 import axios from "axios";
 
@@ -19,6 +19,9 @@ export const RegistrationConfirmation = ({
   const dispatch = useDispatch();
   const router = useRouter(); // ✅ Sekarang ini valid
   const [formData, setFormData] = useState<any>({});
+
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const savedStep1Data = localStorage.getItem("registrationStep1Data");
@@ -36,8 +39,27 @@ export const RegistrationConfirmation = ({
     }
   }, []);
 
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    // setTimeout(() => {
+    //   setOpen(false);
+    //   setConfirmLoading(false);
+    // }, 2000);
+    router.push("/resi");
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
+
+
   const generateAirwayBill = () => {
-    return "AWB-" + Date.now().toString();
+    return Date.now().toString();
   };
 
   const onFinish = async () => {
@@ -56,6 +78,7 @@ export const RegistrationConfirmation = ({
       description: formData.step2?.detailbarang?.description || "",
       origin: formData.step2?.detailbarang?.origin || "",
       destination: formData.step2?.detailbarang?.destination || "",
+      keterangan: formData.step2?.detailbarang?.keterangan || "",
       airwayBill,
     };
 
@@ -70,11 +93,8 @@ export const RegistrationConfirmation = ({
       if (response.status !== 200) {
         throw new Error("Failed to save order");
       }
-
-      message.success("Data konfirmasi berhasil disimpan dan Airway Bill telah dibuat!");
-
-      // ✅ Pindahkan user ke halaman /resi
-      router.push("/resi");
+      
+      showModal();
 
     } catch (error) {
       message.error("Gagal mengirim data ke server");
@@ -82,6 +102,27 @@ export const RegistrationConfirmation = ({
   };
 
   return (
+    <>
+     <Modal
+        title="Berhasil"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        // onCancel={handleCancel}
+      >
+        <p>{"Order Telah Berhasil Dibuat"}</p>
+      </Modal>
+      <Modal
+        title="Gagal"
+        open={open}
+        onOk={handleCancel}
+        confirmLoading={confirmLoading}
+        // onCancel={handleCancel}
+        closable
+      >
+        <p>{"Order Gagal Dibuat Harap COba Lagi"}</p>
+      </Modal>
+    
     <div className="confirmation">
       <h2 className="font-montserrat mb-8 text-2xl font-bold text-center p-2 font-bold text-[#ffff] border-2 rounded-lg bg-[#1d4ebc]">
         Konfirmasi dan Pengecekan Data Order
@@ -89,7 +130,7 @@ export const RegistrationConfirmation = ({
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
         <Card title="Order Number" value={formData.step2?.detailbarang?.orderNumber || "N/A"} />
-        <Card title="Colly / Jumlah Barang" value={formData.step2?.detailbarang?.colly || "N/A"} />
+        <Card title="Colly / Jumlah" value={formData.step2?.detailbarang?.colly || "N/A"} />
         <Card title="Weight / Berat (kg)" value={formData.step2?.detailbarang?.weight || "N/A"} />
         <Card title="Description" value={formData.step2?.detailbarang?.description || "N/A"} />
         <Card title="Origin / Kota Asal" value={formData.step2?.detailbarang?.origin || "N/A"} />
@@ -99,6 +140,10 @@ export const RegistrationConfirmation = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <Card title="Sender / Pengirim" value={formData.step1?.sender?.name || "(Nama Pengirim)"} />
         <Card title="Consignee / Penerima" value={formData.step1?.consignee?.name || "(Nama Penerima)"} />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-6">
+        <Card title="Keterangan" value={formData.step2?.detailbarang?.keterangan || "N/A"} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
@@ -118,6 +163,7 @@ export const RegistrationConfirmation = ({
         </Button>
       </div>
     </div>
+    </>
   );
 };
 

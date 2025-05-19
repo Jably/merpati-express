@@ -19,8 +19,11 @@ export default function Login() {
       const response = await axios.post("/api/login", { email, password, remember });
       if (response.status === 200) {
         message.success("Login successful!");
-        // Redirect to dashboard or home page after login
-        router.push("/dashboard");
+        setTimeout(() => {
+          // setLoading(false);
+          router.push("/dashboard");
+        }, 900);
+        // Redirect to dashboard or home page after login  
       } else {
         message.error("Login failed. Please check your credentials.");
       }
@@ -137,6 +140,12 @@ export default function Login() {
             </div>
           </div>
         </div>
+        {/* Loading Spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600 border-gray-300" />
+        </div>
+      )}
       </section>
     </>
   );

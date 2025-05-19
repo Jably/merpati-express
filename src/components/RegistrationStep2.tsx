@@ -134,12 +134,12 @@ export const RegistrationStep2 = ({ onNext, onBack }: RegistrationStep2Props) =>
           <Input.TextArea rows={4} placeholder="PxLxT" />
         </Form.Item>
 
-        <div style={{ display: "flex", justifyContent: "space-between", gap:"20px" }}>
-          <Button onClick={onBack}>Kembali</Button>
-          <Button onClick={onFinish} type="primary" htmlType="submit">
-            Lanjut
-          </Button>
-        </div>
+        <div className="flex justify-between p-[25px] ">
+                <Button className="font-semibold font-montserrat w-[50vh] bg-[ghostwhite]" onClick={onBack}>Kembali</Button>
+                <Button className="font-semibold font-montserrat w-[50vh] " onClick={onFinish} type="primary" htmlType="submit">
+                  Lanjut
+                </Button>
+              </div>
       </Form>
     </Card>
   );
