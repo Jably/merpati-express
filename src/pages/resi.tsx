@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import BWIPJS from "bwip-js";
-import "../app/globals.css";
+import ResiTemplateForPDF from "@/components/ResiTemplateForPDF"; // Import the non-responsive template
+import "@/app/globals.css";
+import TripleResi from "@/components/TripleResi";
+
 
 const ResiPage = () => {
   const [resiData, setResiData] = useState<any>(null);
-  const resiRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pdfContentRef = useRef<HTMLDivElement>(null); // Ref for the hidden PDF content
 
   useEffect(() => {
-    // Mengambil data dari localStorage
     const savedData = localStorage.getItem("registrationStep4Data");
     if (savedData) {
       setResiData(JSON.parse(savedData));
@@ -22,14 +24,12 @@ const ResiPage = () => {
       router.push("/");
     }
 
-    // Menghapus data saat halaman ditutup
     const handleBeforeUnload = () => {
       localStorage.clear();
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
-    // Membersihkan event listener saat komponen dibersihkan
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -37,75 +37,90 @@ const ResiPage = () => {
 
   const generateBarcode = (text: string) => {
     const canvas = document.createElement("canvas");
-    BWIPJS.toCanvas(canvas, {
-      bcid: "code128",
-      text: text,
-      scale: 3,
-      height: 10,
-      includetext: true,
-      textxalign: "center",
-    });
-    return canvas.toDataURL("image/png");
-  };
-
-  const downloadPDF = async () => {
-    if (resiRef.current) {
-      const canvas = await html2canvas(resiRef.current, {
-        scale: 2,  
-        useCORS: true,
-        x: 0, // Optional: Set offset to ensure content is captured properly
-        y: 0, // Optional: Set offset to ensure content is captured properly
+    try {
+      BWIPJS.toCanvas(canvas, {
+        bcid: "code128",
+        text: text,
+        scale: 3,
+        height: 10,
+        includetext: true,
+        textxalign: "center",
       });
-
-      const imgData = canvas.toDataURL("image/png");
-
-      const imgWidth = canvas.width * 0.264583; // px to mm
-      const imgHeight = canvas.height * 0.264583;
-
-      const padding = 15; // Increased padding for better spacing
-      const pdfWidth = imgWidth + padding * 2;
-      const pdfHeight = imgHeight + padding * 2;
-
-      const pdf = new jsPDF({
-        orientation: pdfWidth > pdfHeight ? "l" : "p",
-        unit: "mm",
-        format: [pdfWidth, pdfHeight],
-      });
-
-      // Add padding to image inside the PDF
-      pdf.addImage(imgData, "PNG", padding, padding, imgWidth, imgHeight);
-
-      pdf.save("resi.pdf");
+      return canvas.toDataURL("image/png");
+    } catch (e) {
+      console.error("Error generating barcode:", e);
+      return "";
     }
   };
 
+  
+
+  const downloadPDF = async () => {
+    const original = pdfContentRef.current;
+    if (!original) return;
+  
+    const canvas = await html2canvas(original, {
+      scale: 2,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: original.scrollWidth,
+      windowHeight: original.scrollHeight,
+    });
+  
+    const imgData = canvas.toDataURL("image/png");
+  
+    const pdf = new jsPDF({
+      unit: "mm",
+      format: "a4",
+      compress: true,
+    });
+  
+    // Mendapatkan ukuran gambar dalam mm (konversi dari px)
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  
+    // Set scale factor untuk menjaga kualitas
+    pdf.internal.scaleFactor = 2;
+  
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("resi.pdf");
+  };
+  
+  
+
   const goBack = () => {
-    // Hapus semua item di localStorage saat tombol kembali ditekan
     localStorage.clear();
     router.push("/");
   };
+
+  if (!resiData) {
+    return <div className="text-center p-8">Memuat data resi...</div>;
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto bg-gray-50">
       <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Resi Pengiriman</h2>
 
-      <div
-        ref={resiRef}
-        className="border p-8 rounded-lg shadow-lg bg-white w-full max-w-3xl mx-auto"
-        style={{ padding: "20px" }} // Added padding here to ensure content is not tight
-      >
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6 border-b-2 pb-4">
-        <img
-          src="miring.png"
-          alt="miring"
-          className="max-w-[140px] relative"
-        />
+      {/* Konten resi yang responsif untuk tampilan user */}
+      <div className="border p-8 rounded-lg shadow-lg bg-white w-full max-w-3xl mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 border-b-2 pb-4">
+          <img
+            src="miring.png"
+            alt="miring"
+            className="w-24 sm:w-32 md:w-[140px] h-auto mb-4 sm:mb-0"
+          />
+          <img
+            src="logo.svg"
+            alt="logo"
+            className="w-[50px] h-auto mb-4 sm:mb-0"
+          />
           {resiData?.airwayBill && (
             <img
-              src={generateBarcode(resiData.airwayBill)} // Barcode image
+              src={generateBarcode(resiData.airwayBill)}
               alt="Barcode"
-              className="w-48 h-auto"
+              className="w-32 sm:w-40 md:w-48 h-auto"
             />
           )}
         </div>
@@ -157,16 +172,20 @@ const ResiPage = () => {
         </div>
 
         {/* TTD */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <p className="font-semibold text-center">Tanda Tangan Pengirim</p>
-            <div className="border h-16 my-2"></div>
-          </div>
-          <div>
-            <p className="font-semibold text-center">Tanda Tangan Penerima</p>
-            <div className="border h-16 my-2"></div>
-          </div>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <div>
+    <p className="font-semibold text-center">Tanda Tangan Pengirim</p>
+    <div className="border h-16 my-2"></div>
+  </div>
+  <div>
+    <p className="font-semibold text-center">Tanda Tangan Kurir</p>
+    <div className="border h-16 my-2"></div>
+  </div>
+  <div>
+    <p className="font-semibold text-center">Tanda Tangan Penerima</p>
+    <div className="border h-16 my-2"></div>
+  </div>
+</div>
 
         {/* Footer */}
         <div className="text-center mt-6">
@@ -174,6 +193,14 @@ const ResiPage = () => {
           <p className="text-sm text-gray-600">Resi ini sebagai bukti pengiriman yang sah.</p>
         </div>
       </div>
+
+      {/* Hidden component for PDF generation */}
+<div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+  {resiData && (
+    <TripleResi ref={pdfContentRef} resiData={resiData} generateBarcode={generateBarcode} />
+  )}
+</div>
+
 
       {/* Tombol Download */}
       <div className="flex justify-center mt-8">
@@ -194,7 +221,9 @@ const ResiPage = () => {
           Kembali
         </button>
       </div>
+      
     </div>
+    
   );
 };
 

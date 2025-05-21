@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { updateForm } from "@/store/formSlice";
 import React, { useEffect } from "react";
-import "../app/globals.css";
+import "../app/globals.css"; // Pastikan Tailwind CSS diimpor di sini atau di layout utama
 
 interface RegistrationStep2Props {
   onNext: () => void;
@@ -14,13 +14,6 @@ export const RegistrationStep2 = ({ onNext, onBack }: RegistrationStep2Props) =>
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.form);
   const [form] = Form.useForm();
-
-  // // Function generate W + 8 digit random
-  // const generateOrderNumber = () => {
-  //   const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
-  //   return `W${randomNumber}`;
-  // };
-  
 
   useEffect(() => {
     const savedData = localStorage.getItem("registrationStep2Data");
@@ -37,10 +30,6 @@ export const RegistrationStep2 = ({ onNext, onBack }: RegistrationStep2Props) =>
           keterangan: parsed.detailbarang.keterangan,
         });
       }
-
-    } else {
-      // Auto set orderNumber kalau belum ada
-      // form.setFieldsValue({ ordernumber: generateOrderNumber() });
     }
   }, [form]);
 
@@ -48,99 +37,123 @@ export const RegistrationStep2 = ({ onNext, onBack }: RegistrationStep2Props) =>
     try {
       const detailbarang = await form.validateFields();
       const updatedValues = {
-      detailbarang: {
-        orderNumber: detailbarang.orderNumber,
-        colly: detailbarang.colly,
-        weight: detailbarang.weight,
-        description: detailbarang.description,
-        origin: detailbarang.origin,
-        destination: detailbarang.destination,
-        keterangan: detailbarang.keterangan,
-      }
-    }
+        detailbarang: {
+          orderNumber: detailbarang.orderNumber,
+          colly: detailbarang.colly,
+          weight: detailbarang.weight,
+          description: detailbarang.description,
+          origin: detailbarang.origin,
+          destination: detailbarang.destination,
+          keterangan: detailbarang.keterangan,
+        },
+      };
 
-    localStorage.setItem("registrationStep2Data", JSON.stringify(updatedValues));
-    dispatch(updateForm(updatedValues));
-    onNext();
-  } catch (error){
-      console.error("gagal", error)
-  }
-};
+      localStorage.setItem("registrationStep2Data", JSON.stringify(updatedValues));
+      dispatch(updateForm(updatedValues));
+      onNext();
+    } catch (error) {
+      console.error("gagal", error);
+    }
+  };
 
   return (
-    <Card title="" classNames={{
-      body: 'ant-card-body',
-    }}>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={formData.detailbarang}
-        className="registration-form"
+    <div className="flex justify-center items-center min-h-screen p-4 sm:p-6 md:p-8">
+      {/* Menggunakan div wrapper untuk responsivitas card */}
+      <Card
+        title=""
+        className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl shadow-lg rounded-lg" // Lebar responsif
+        styles={{
+          body: {
+            display: 'flex',
+            flexDirection: 'column', // Pastikan konten Card tetap kolom
+            alignContent: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        }}
       >
-        <Form.Item
-          name="orderNumber"
-          label="Order Number"
-          rules={[{ required: true, message: "Order number wajib diisi" }]}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={formData.detailbarang}
+          className="font-bold w-full p-4 sm:p-6 md:p-8" // Padding responsif untuk form
         >
-          <Input placeholder="ex: WS12023" />
-        </Form.Item>
+          {/* Form Items: Gunakan w-full untuk setiap input agar responsif */}
+          <Form.Item
+            name="orderNumber"
+            label="Order Number"
+            rules={[{ required: true, message: "Order number wajib diisi" }]}
+            className="w-full"
+          >
+            <Input placeholder="ex: WS12023" />
+          </Form.Item>
 
-        <Form.Item
-          name="colly"
-          label="Colly/Jumlah"
-          rules={[{ required: true, message: "Colly wajib diisi" }]}
-        >
-          <Input placeholder="Jumlah barang" />
-        </Form.Item>
+          <Form.Item
+            name="colly"
+            label="Colly/Jumlah"
+            rules={[{ required: true, message: "Colly wajib diisi" }]}
+            className="w-full"
+          >
+            <Input placeholder="Jumlah barang" />
+          </Form.Item>
 
-        <Form.Item
-          name="weight"
-          label="Berat (Kg)"
-          rules={[{ required: true, message: "Berat barang wajib diisi" }]}
-        >
-          <Input min={0} style={{ width: "100%" }} placeholder="Contoh: 1.5" />
-        </Form.Item>
+          <Form.Item
+            name="weight"
+            label="Berat (Kg)"
+            rules={[{ required: true, message: "Berat barang wajib diisi" }]}
+            className="w-full"
+          >
+            <Input min={0} placeholder="Contoh: 1.5" />
+          </Form.Item>
 
-        <Form.Item
-          name="description"
-          label="Deskripsi Barang/Nama Barang"
-          rules={[{ required: true, message: "Deskripsi barang wajib diisi" }]}
-        >
-          <Input.TextArea rows={4} placeholder="Deskripsi barang Contoh: Kabel" />
-        </Form.Item>
+          <Form.Item
+            name="description"
+            label="Deskripsi Barang/Nama Barang"
+            rules={[{ required: true, message: "Deskripsi barang wajib diisi" }]}
+            className="w-full"
+          >
+            <Input.TextArea rows={4} placeholder="Deskripsi barang Contoh: Kabel" />
+          </Form.Item>
 
-        <Form.Item
-          name="origin"
-          label="Asal"
-          rules={[{ required: true, message: "Asal wajib diisi" }]}
-        >
-          <Input placeholder="Asal barang" />
-        </Form.Item>
+          <Form.Item
+            name="origin"
+            label="Asal"
+            rules={[{ required: true, message: "Asal wajib diisi" }]}
+            className="w-full"
+          >
+            <Input placeholder="Asal barang" />
+          </Form.Item>
 
-        <Form.Item
-          name="destination"
-          label="Tujuan"
-          rules={[{ required: true, message: "Tujuan wajib diisi" }]}
-        >
-          <Input placeholder="Tujuan pengiriman" />
-        </Form.Item>
+          <Form.Item
+            name="destination"
+            label="Tujuan"
+            rules={[{ required: true, message: "Tujuan wajib diisi" }]}
+            className="w-full"
+          >
+            <Input placeholder="Tujuan pengiriman" />
+          </Form.Item>
 
-        <Form.Item
-          name="keterangan"
-          label="Keterangan Tambahan (PxLxT)"
-          rules={[{ required: true, message: "Wajib Diisi!!" }]}
-        >
-          <Input.TextArea rows={4} placeholder="PxLxT" />
-        </Form.Item>
+          <Form.Item
+            name="keterangan"
+            label="Keterangan Tambahan (PxLxT)"
+            rules={[{ required: true, message: "Wajib Diisi!!" }]}
+            className="w-full"
+          >
+            <Input.TextArea rows={4} placeholder="PxLxT" />
+          </Form.Item>
 
-        <div className="flex justify-between p-[25px] ">
-                <Button className="font-semibold font-montserrat w-[50vh] bg-[ghostwhite]" onClick={onBack}>Kembali</Button>
-                <Button className="font-semibold font-montserrat w-[50vh] " onClick={onFinish} type="primary" htmlType="submit">
-                  Lanjut
-                </Button>
-              </div>
-      </Form>
-    </Card>
+          {/* Tombol Navigasi */}
+          <div className="flex flex-col md:flex-row justify-between w-full p-4 md:p-[25px] gap-y-4 md:gap-x-5 mt-4">
+            <Button className="font-semibold font-montserrat w-full md:w-1/2 bg-[ghostwhite]" onClick={onBack}>
+              Kembali
+            </Button>
+            <Button className="font-semibold font-montserrat w-full md:w-1/2" onClick={onFinish} type="primary" htmlType="submit">
+              Lanjut
+            </Button>
+          </div>
+        </Form>
+      </Card>
+    </div>
   );
 };

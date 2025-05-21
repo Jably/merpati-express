@@ -172,7 +172,7 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
       };
   
       // Alamat komplit ditampilkan, tapi alamat jalan disimpan terpisah
-      const senderAddress = `${senderLocation.village}, ${senderLocation.district}, ${senderLocation.regency}, ${senderLocation.province}, ${senderValues.senderaddress}`;
+      const senderAddress = `${senderLocation.village}, ${senderLocation.district}, ${senderLocation.regency}, ${senderLocation.province}, ${senderValues.senderaddress ?? "-"}`;
       const consigneeAddress = `${consigneeLocation.village}, ${consigneeLocation.district}, ${consigneeLocation.regency}, ${consigneeLocation.province}, ${consigneeValues.consigneeaddress}`;
   
       const updatedValues = {
@@ -180,7 +180,7 @@ export const RegistrationStep1 = ({ onNext }: RegistrationStep1Props) => {
           name: senderValues.sender,
           address: senderAddress, // Alamat komplit (lokasi + jalan)
           location: senderLocation,
-          addressDetail: senderValues.senderaddress || "", // Alamat jalan
+          addressDetail: senderValues.senderaddress, // Alamat jalan
         },
         consignee: {
           name: consigneeValues.consignee,
