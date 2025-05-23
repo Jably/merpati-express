@@ -35,4 +35,36 @@ model User {
   password String
 }
 
+model Invoice {
+  id              String       @id @default(uuid())
+  namaPT          String
+  invoiceNumber   String       @unique // Ensures unique invoice numbers
+  invoiceDate     DateTime
+  totalAmount     Float        @default(0) // Stores the total calculated amount for quick reference
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  items           InvoiceItem[] // Relation to InvoiceItem
+}
 
+model InvoiceItem {
+  id              String    @id @default(uuid())
+  invoiceId       String
+  invoice         Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade) // Links to Invoice, cascade deletes items if invoice is removed
+  type            String    // "KIRIM" or "RETUR"
+  no              Int
+  date            DateTime
+  pengirim        String
+  kotaOrigin      String
+  penerima        String
+  kotaTujuan      String
+  noTiket         String
+  partDesc        String
+  colly           Int
+  kg              Float
+  ket             String    // "Good Part" or "Bad Part"
+  service         String
+  biayaPerKg      Float
+  totalBiayaItem  Float     // Calculated: kg * biayaPerKg for this specific item
+
+  @@index([invoiceId]) // Improves query performance when fetching items by invoice
+}

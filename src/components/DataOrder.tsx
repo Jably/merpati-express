@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+
 import "@/app/globals.css";
 import withAuth from "../../lib/withAuth";
 
@@ -35,7 +38,7 @@ export default function DataOrder() {
 
   useEffect(() => { fetchOrders() }, [])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -79,9 +82,9 @@ export default function DataOrder() {
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         {/* Tabel */}
         <div className="w-full text-center">
-          <Table className="table-auto w-full font-montserrat font-bold">
+          <Table className="table-auto w-full font-montserrat overflow-x-auto">
             <TableHeader>
-              <TableRow className="bg-[#1d4ebc] hover:bg-[#1d4ebc]">
+              <TableRow className="bg-[#1d4ebc] hover:bg-[#1d4ebc] font-bold">
                 <TableHead className="whitespace-nowrap text-center text-white font-extrabold">AWB</TableHead>
                 <TableHead className="whitespace-nowrap text-center text-white font-extrabold">No Order</TableHead>
                 <TableHead className="whitespace-nowrap text-center text-white font-extrabold">Pengirim</TableHead>
@@ -93,7 +96,7 @@ export default function DataOrder() {
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order.id}>
+                <TableRow className="font-medium " key={order.id}>
                   <TableCell className="whitespace-nowrap">{order.airwayBill}</TableCell>
                   <TableCell className="whitespace-nowrap">{order.orderNumber}</TableCell>
                   <TableCell className="whitespace-nowrap">{order.senderName}</TableCell>
@@ -139,37 +142,96 @@ export default function DataOrder() {
             <CardTitle>{editingId ? 'Edit Order' : 'Tambah Order Baru'}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-4 font-montserrat font-bold">
-              <Input name="orderNumber" onChange={handleChange} value={form.orderNumber || ''} placeholder="No Order" />
-              <Input name="senderName" onChange={handleChange} value={form.senderName || ''} placeholder="Nama Pengirim" />
-              <Input name="senderAddress" onChange={handleChange} value={form.senderAddress || ''} placeholder="Alamat Pengirim" />
-              <Input name="consigneeName" onChange={handleChange} value={form.consigneeName || ''} placeholder="Nama Penerima" />
-              <Input name="consigneeAddress" onChange={handleChange} value={form.consigneeAddress || ''} placeholder="Alamat Penerima" />
-              <Input name="transport" onChange={handleChange} value={form.transport || ''} placeholder="Transportasi" />
-              <Input name="service" onChange={handleChange} value={form.service || ''} placeholder="Layanan" />
-              <Input name="colly" onChange={handleChange} value={form.colly || ''} placeholder="Colly" />
-              <Input name="weight" onChange={handleChange} value={form.weight || ''} placeholder="Berat" />
-              <Input name="description" onChange={handleChange} value={form.description || ''} placeholder="Deskripsi" />
-              <Input name="origin" onChange={handleChange} value={form.origin || ''} placeholder="Asal" />
-              <Input name="destination" onChange={handleChange} value={form.destination || ''} placeholder="Tujuan" />
-              <Input name="airwayBill" onChange={handleChange} value={form.airwayBill || ''} placeholder="Airway Bill" />
-              <Input name="keterangan" onChange={handleChange} value={form.keterangan || ''} placeholder="Keterangan"></Input>
-  
-              <Select value={form.status || 'pending'} onValueChange={handleSelectChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Pilih Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="delivered">Delivered</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-  
-              <Button onClick={handleSave}>
-                {editingId ? 'Update' : 'Simpan'}
-              </Button>
-            </div>
+            
+<div className="grid grid-cols-1 gap-4 font-montserrat font-bold">
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="orderNumber">No Order</Label>
+    <Input id="orderNumber" name="orderNumber" onChange={handleChange} value={form.orderNumber || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="senderName">Nama Pengirim</Label>
+    <Input id="senderName" name="senderName" onChange={handleChange} value={form.senderName || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="senderAddress">Alamat Pengirim</Label>
+    <Textarea id="senderAddress" name="senderAddress" onChange={handleChange} value={form.senderAddress || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="consigneeName">Nama Penerima</Label>
+    <Input id="consigneeName" name="consigneeName" onChange={handleChange} value={form.consigneeName || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="consigneeAddress">Alamat Penerima</Label>
+    <Textarea id="consigneeAddress" name="consigneeAddress" onChange={handleChange} value={form.consigneeAddress || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="transport">Transportasi</Label>
+    <Input id="transport" name="transport" onChange={handleChange} value={form.transport || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="service">Layanan</Label>
+    <Input id="service" name="service" onChange={handleChange} value={form.service || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="colly">Colly</Label>
+    <Input id="colly" name="colly" onChange={handleChange} value={form.colly || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="weight">Berat</Label>
+    <Input id="weight" name="weight" onChange={handleChange} value={form.weight || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="description">Deskripsi</Label>
+    <Input id="description" name="description" onChange={handleChange} value={form.description || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="origin">Asal</Label>
+    <Input id="origin" name="origin" onChange={handleChange} value={form.origin || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="destination">Tujuan</Label>
+    <Input id="destination" name="destination" onChange={handleChange} value={form.destination || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="airwayBill">Airway Bill</Label>
+    <Input id="airwayBill" name="airwayBill" onChange={handleChange} value={form.airwayBill || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="keterangan">Keterangan</Label>
+    <Input id="keterangan" name="keterangan" onChange={handleChange} value={form.keterangan || ''} />
+  </div>
+
+  <div className="grid w-full gap-1.5">
+    <Label htmlFor="status">Status</Label>
+    <Select value={form.status || 'pending'} onValueChange={handleSelectChange}>
+      <SelectTrigger id="status">
+        <SelectValue placeholder="Pilih Status" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="pending">Pending</SelectItem>
+        <SelectItem value="delivered">Delivered</SelectItem>
+        <SelectItem value="cancelled">Cancelled</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+
+  <Button onClick={handleSave}>
+    {editingId ? 'Update' : 'Simpan'}
+  </Button>
+</div>
           </CardContent>
         </Card>
       </div>

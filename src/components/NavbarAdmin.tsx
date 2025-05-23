@@ -57,9 +57,9 @@ function NavbarAdmin() {
       <div className={`
         bg-white shadow-md z-40
         transition-all duration-300
-        ${isMobileOpen ? 'translate-x-0 fixed top-0 left-0 h-full' : '-translate-x-full'} 
+        ${isMobileOpen ? 'translate-x-0 fixed top-0 left-0 h-full' : '-translate-x-full left-0 fixed'} 
         md:translate-x-0 md:static
-        ${isCollapsed ? 'w-10' : 'w-60'}
+        ${isCollapsed ? 'w-20' : 'w-60'}
         flex flex-col
       `}>
         <div className="flex items-center justify-center px-4 py-4">
