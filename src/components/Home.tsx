@@ -71,9 +71,26 @@ export default function Home() {
             memberikan solusi pengiriman yang efisien bagi perorangan, UKM, hingga
             perusahaan besar.
           </p>
+         
+          <div className="text-sm sm:text-base md:text-lg lg:text-xl font-montserrat font-bold text-[#1d4ebc] text-center">
+  Our Clients
+  <div className="flex flex-wrap gap-x-12 items-center justify-center mt-12">
+    <img
+      src="hakaes.png"
+      alt="Hakaes"
+      className="h-20 w-auto max-w-[150px] object-contain"
+    />
+    <img
+      src="dn.png"
+      alt="DN"
+      className="h-20 w-auto max-w-[150px] object-contain mt-14"
+    />
+  </div>
+</div>
 
-          {/* Carousel */}
-          <Carousel />
+
+          {/* Carousel
+          <Carousel /> */}
         </div>
       </div>
 
