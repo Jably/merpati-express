@@ -25,7 +25,7 @@ export default function Home() {
       <Navbar />
 
       {/* Background full screen */}
-      <div className="relative w-full h-screen">
+      <div id="home" className="relative w-full h-screen">
         <img
           src="background.svg"
           alt="background"
@@ -83,7 +83,7 @@ export default function Home() {
     <img
       src="dn.png"
       alt="DN"
-      className="h-20 w-auto max-w-[150px] object-contain mt-14"
+      className="h-20 w-auto max-w-[150px] object-contain mt-[15px]"
     />
   </div>
 </div>

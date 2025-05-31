@@ -15,6 +15,10 @@ export default function Navbar() {
     router.push("/login");
   }
 
+  const tracking = () => {
+    router.push("/tracking");
+  }
+
   return (
     <nav className="bg-[#d8d8d8] shadow-md w-full fixed top-0 left-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,10 +32,11 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex space-x-6">
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+            <button onClick={() => document.getElementById('home')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">Home</button>
             <button onClick={() => document.getElementById('about')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">About</button>
             <button onClick={() => document.getElementById('footer')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">Contact</button>
             <button onClick={login} className="text-gray-700 hover:text-blue-600 font-medium">Login</button>
+            <button onClick={tracking} className="text-gray-700 hover:text-blue-600 font-medium">Track Status</button>
           </div>
 
           {/* Mobile button */}
@@ -46,11 +51,11 @@ export default function Navbar() {
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden bg-white shadow-md">
-          <div className="px-4 pt-2 pb-4 space-y-2">
-            <a href="#" className="block text-gray-700 hover:text-blue-600">Home</a>
-            <a href="#" className="block text-gray-700 hover:text-blue-600">Order</a>
-            <a href="#" className="block text-gray-700 hover:text-blue-600">About</a>
-            <a href="#" className="block text-gray-700 hover:text-blue-600">Contact</a>
+          <div className="px-4 pt-2 pb-4 space-y-2 flex flex-col justify-center items-center">
+            <button onClick={() => document.getElementById('home')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">Home</button>
+            <button onClick={() => document.getElementById('about')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">About</button>
+            <button onClick={() => document.getElementById('footer')?.scrollIntoView()} className="text-gray-700 hover:text-blue-600 font-medium">Contact</button>
+            <button onClick={login} className="text-gray-700 hover:text-blue-600 font-medium">Login</button>
           </div>
         </div>
       )}
