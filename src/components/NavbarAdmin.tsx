@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faHouseChimney, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
@@ -40,6 +40,10 @@ function NavbarAdmin() {
     await fetch("/api/logout", { method: "POST" });
     router.push("/login");
   };
+
+  const goHome = () => {
+    router.push("/");
+  }
 
   const renderPage = () => {
     switch (currentPage) {
@@ -97,7 +101,7 @@ function NavbarAdmin() {
       {/* Main */}
       <div className="flex-1 flex flex-col min-h-screen">
         <nav className="bg-[#d8d8d8] shadow-md w-full fixed top-0 left-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[200vh] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16 items-center">
               <div className="flex items-center space-x-4">
                 <div className="md:hidden">
@@ -114,6 +118,7 @@ function NavbarAdmin() {
                 <UserCircleIcon className="w-8 h-8 text-gray-700" />
                 <div className="text-lg text-gray-700 text-center font-semibold">{adminName || "Loading..."}</div>
                 <ArrowRightOnRectangleIcon onClick={handleLogout} className="w-8 h-8 text-gray-700 cursor-pointer" />
+                <FontAwesomeIcon icon={faHouseChimney} onClick={goHome} className="w-8 h-8" />
               </div>
             </div>
           </div>

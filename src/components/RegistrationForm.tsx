@@ -6,6 +6,7 @@ import { RegistrationStep2 } from "./RegistrationStep2";
 import { RegistrationStep3 } from "./RegistrationStep3";
 import { RegistrationConfirmation } from "./RegistrationConfirmation";
 import { Card } from "antd";
+import Navbar from "./Navbar";
 
 
 export const RegistrationForm = () => {
@@ -63,6 +64,7 @@ export const RegistrationForm = () => {
   
 
   return (
+    <><Navbar />
     <div className="registration-container overflow-x-hidden">
       <div className="title">
         <p>
@@ -76,15 +78,13 @@ export const RegistrationForm = () => {
               key={step}
               className={`step ${currentStep === step ? "active" : ""}`}
             >
-              <div className="step-title">{`Step ${step}: ${
-                step === 1
+              <div className="step-title">{`Step ${step}: ${step === 1
                   ? "Informasi Pengirim dan Penerima"
                   : step === 2
-                  ? "Isi Detail Barang"
-                  : step === 3
-                  ? "Pilih Layanan Pengiriman"
-                  : "Konfirmasi Semua Data"
-              }`}</div>
+                    ? "Isi Detail Barang"
+                    : step === 3
+                      ? "Pilih Layanan Pengiriman"
+                      : "Konfirmasi Semua Data"}`}</div>
               <div className="progress-bar">
                 <div
                   className="progress-fill"
@@ -96,7 +96,7 @@ export const RegistrationForm = () => {
         </div>
       </div>
 
-      <Card loading={loading} >
+      <Card loading={loading}>
         {currentStep === 1 && <RegistrationStep1 onNext={nextStep} />}
         {currentStep === 2 && (
           <RegistrationStep2 onNext={nextStep} onBack={prevStep} />
@@ -105,9 +105,9 @@ export const RegistrationForm = () => {
           <RegistrationStep3 onNext={nextStep} onBack={prevStep} />
         )}
         {currentStep === 4 && (
-          <RegistrationConfirmation  onNext={nextStep} onBack={prevStep} />
+          <RegistrationConfirmation onNext={nextStep} onBack={prevStep} />
         )}
       </Card>
-    </div>
+    </div></>
   );
 };

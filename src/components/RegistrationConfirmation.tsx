@@ -135,6 +135,7 @@ export const RegistrationConfirmation = ({
 
   return (
     <>
+      
       {/* Modal Konfirmasi Sebelum Kirim */}
       <Modal
         centered
