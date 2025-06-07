@@ -34,16 +34,12 @@ interface User {
 }
 
 export default function DataAkun() {
-  // Hanya perlu state untuk pengguna yang sedang login untuk memeriksa perannya
   const [currentUserRole, setCurrentUserRole] = useState<UserRole | null>(null);
-
-  // State untuk manajemen pengguna (CRUD)
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [crudForm, setCrudForm] = useState({ name: '', email: '', password: '', role: UserRole.USER });
   const [isCrudModalOpen, setIsCrudModalOpen] = useState(false);
 
-  // --- Fungsionalitas Mendapatkan Peran Pengguna Saat Ini ---
   const fetchCurrentUserRole = async () => {
     try {
       const res = await fetch('/api/user');
@@ -65,7 +61,6 @@ export default function DataAkun() {
     fetchCurrentUserRole();
   }, []);
 
-  // --- Fungsionalitas Manajemen Pengguna (Admin CRUD) ---
   const fetchAllUsers = async () => {
     if (currentUserRole === UserRole.ADMIN) {
       try {
@@ -85,8 +80,10 @@ export default function DataAkun() {
         console.error("Network or parsing error fetching all users:", error);
         setAllUsers([]);
       }
-    } else if (currentUserRole !== null && currentUserRole !== UserRole.ADMIN) {
-        setAllUsers([]);
+    } else { // Jika currentUserRole BUKAN ADMIN
+      if (currentUserRole !== null) { // Dan jika sudah dimuat (bukan null)
+        setAllUsers([]); // Kosongkan daftar pengguna
+      }
     }
   }
 
@@ -145,8 +142,7 @@ export default function DataAkun() {
     }
 
     const payload: any = { ...crudForm };
-    // BARIS YANG DIPERBAIKI:
-    if (editingUser && !payload.password) { // Menggunakan 'payload.password' bukan 'form.password'
+    if (editingUser && !payload.password) {
       delete payload.password;
     }
 
