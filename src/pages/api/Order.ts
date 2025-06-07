@@ -5,13 +5,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const session = req.cookies.userId;
 
-    // ❗️Cek session dulu di awal
+    // ❗️Cek session dulu
     if (!session) {
       return res.status(401).json({ message: "Unauthorized: No session found" });
     }
 
+    // 🔒 Ambil user dan cek role-nya
+    const user = await prisma.user.findUnique({
+      where: { id: Number(session) },
+      select: { role: true },
+    });
+
+    if (!user || user.role !== 'ADMIN') {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+
     switch (req.method) {
-      // ✅ GET: Ambil semua order atau satu order berdasarkan orderNumber
       case 'GET':
         if (req.query.orderNumber) {
           const order = await prisma.order.findFirst({
@@ -30,14 +39,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
         return res.status(200).json(orders);
 
-      // ✅ POST: Tambah order baru
       case 'POST':
         const newOrder = await prisma.order.create({
           data: req.body,
         });
         return res.status(201).json(newOrder);
 
-      // ✅ PUT: Update order by ID
       case 'PUT':
         const { id, ...updateData } = req.body;
         if (!id) {
@@ -50,7 +57,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
         return res.status(200).json(updatedOrder);
 
-      // ✅ DELETE: Hapus order by ID
       case 'DELETE':
         const orderId = req.body.id;
         if (!orderId) {
@@ -62,7 +68,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
         return res.status(200).json({ message: 'Order deleted' });
 
-      // ❌ Method tidak diizinkan
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
         return res.status(405).end(`Method ${req.method} Not Allowed`);

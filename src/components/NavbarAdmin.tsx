@@ -132,4 +132,4 @@ function NavbarAdmin() {
   );
 }
 
-export default withAuth(NavbarAdmin);
+export default withAuth(NavbarAdmin, ["ADMIN"]);

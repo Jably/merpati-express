@@ -33,16 +33,23 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
     try {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.ok) {
-        router.push("/admin");
+        const data = await response.json();
+  
+        // ✅ Redirect berdasarkan role
+        if (data.user.role === "ADMIN") {
+          router.push("/admin");
+        } else if (data.user.role === "USER") {
+          router.push("/registrationform");
+        }
       } else {
         const res = await response.json();
         setError(res.message || "Login failed");
@@ -54,12 +61,17 @@ export default function Login() {
     }
   };
 
+  const goHome = () => {
+    router.push("/");
+  };
+  
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-6 dark:bg-gray-800">
         <div className="flex flex-col items-center mb-6">
           <img className="w-12 h-12" src="/logo.svg" alt="logo" />
-          <h1 className="text-2xl font-semibold mt-2 text-gray-900 dark:text-white">Admin Login</h1>
+          <h1 className="text-2xl font-semibold mt-2 text-gray-900 dark:text-white">Login</h1>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -103,6 +115,16 @@ export default function Login() {
             }`}
           >
             {loading ? "Signing in..." : "Sign in"}
+          </button>
+          <button
+            type="button"
+            disabled={loading}
+            onClick={goHome}
+            className={`w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? "Home" : "Home"}
           </button>
         </form>
       </div>

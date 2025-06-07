@@ -33,6 +33,12 @@ model User {
   name     String
   email    String @unique
   password String
+  role      UserRole  @default(ADMIN)
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 model Invoice {
