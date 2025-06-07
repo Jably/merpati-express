@@ -154,14 +154,6 @@ export const RegistrationForm = () => {
               </div>
             ))}
           </div>
-          <div>
-            {isLoggedIn ? (
-              <p>Selamat datang, {userRole}!</p>
-            ) : (
-              <p>Anda belum login.</p> // Seharusnya tidak terlihat karena di-redirect
-            )}
-            <button onClick={handleLogout}>LOGOUT</button>
-          </div>
         </div>
 
         <Card loading={loading}>
